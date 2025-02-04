@@ -1,4 +1,4 @@
-echo. > src\main\groovy\com\example\Application.groovy - build file in windows
+echo $null >>  src/main/groovy/com/example/controller/HelloController.groovy
 mkdir - build directory in windows
 
 1. Maven pom.xml Dependencies
@@ -1023,3 +1023,13 @@ If it works, IntelliJ should now recognize Groovy correctly.
 ✔ Rebuild & Run the project with mvn spring-boot:run.
 
 Let me know if you need more help! 🚀😊
+
+for creating new repo in git 
+
+cd D:\NNTech\FirstApiNNTech
+git init
+git add .
+git commit -m "Initial commit - Spring Boot Groovy API"
+git branch -M main
+git remote add origin https://github.com/yourusername/FirstApiNNTech.git
+git push -u origin main

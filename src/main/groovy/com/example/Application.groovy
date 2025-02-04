@@ -9,3 +9,5 @@ class Application {
         SpringApplication.run(Application, args)
     }
 }
+
+//mvn spring-boot:run to run the app
