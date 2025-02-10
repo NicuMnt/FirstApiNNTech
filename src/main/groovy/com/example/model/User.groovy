@@ -1,17 +1,18 @@
 package com.example.model
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "users")
+@Table(name = "users") // ✅ Correct table name
 class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id
 
-    @Column(nullable = false)
     String name
-
-    @Column(nullable = false, unique = true)
     String email
+
+
+    String password
 }

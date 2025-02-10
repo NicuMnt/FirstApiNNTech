@@ -13,4 +13,10 @@ class Documentation {
             "HomeController → Likely the main entry point (e.g., /home route).\n" +
             "UserController → Manages user-related requests (e.g., /users route)."
 
+
+    String fixes = " Summary of Fixes\n" +
+            "Issue\tCause\tFix\n" +
+            "POST: \"Cannot cast UserDTO to User\"\tTrying to save UserDTO instead of User\tConvert UserDTO to User before saving\n" +
+            "DELETE: \"User deleted successfully\" even if ID doesn’t exist\tNo check for existing user before deletion\tCheck existsById(id) before deleting"
+
 }
