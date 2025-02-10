@@ -15,7 +15,7 @@ class HelloController {
 
     @GetMapping("/hello")
     String sayHello() {
-        return "Hello from Spring Boot with Groovy!"
+        return "First Api NNTech"
     }
 
     @PostMapping("/hello")
