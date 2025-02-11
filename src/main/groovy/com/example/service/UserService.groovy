@@ -4,17 +4,16 @@ import com.example.dto.UserDTO
 import com.example.model.User
 import com.example.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import jakarta.persistence.EntityNotFoundException
+import org.springframework.http.HttpStatus
+import org.springframework.web.server.ResponseStatusException
 
 @Service
 class UserService {
 
     @Autowired
     UserRepository userRepository
-
-    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder()
 
     // ✅ Return list of users as UserDTO (hides passwords)
     List<UserDTO> getAllUsers() {
@@ -41,40 +40,34 @@ class UserService {
         return new UserDTO(savedUser.id, savedUser.name, savedUser.email) // ✅ No password
     }
 
-    // ✅ Register a new user (with password hashing)
-    UserDTO registerUser(User user) {
+    String registerUser(User user) {
         if (userRepository.findByEmail(user.email) != null) {
-            throw new RuntimeException("Email already registered!")
+            // ✅ Return proper HTTP 409 Conflict instead of 500 error
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Email already registered!")
         }
 
-        // Hash password before saving
-        user.password = passwordEncoder.encode(user.password)
+        // Save user
+        userRepository.save(user)
 
-        User savedUser = userRepository.save(user)
-        return new UserDTO(savedUser.id, savedUser.name, savedUser.email) // ✅ No password
+        return "Your account has been successfully registered!"
     }
 
-
+    // ✅ Save UserDTO (without password encoding)
     UserDTO saveUser(UserDTO userDTO) {
-        // Convert DTO to Entity
         User user = new User()
         user.name = userDTO.name
         user.email = userDTO.email
-        user.password = passwordEncoder.encode(userDTO.password) // Encode password!
+        user.password = userDTO.password
 
-        // ✅ Save to DB
         User savedUser = userRepository.save(user)
-
-        // ✅ Return DTO (to avoid exposing password)
         return new UserDTO(savedUser.id, savedUser.name, savedUser.email)
     }
 
-
-
-    public void deleteUser(Long id) {
+    // ✅ Delete user
+    void deleteUser(Long id) {
         if (!userRepository.existsById(id)) {
-            throw new EntityNotFoundException("User with ID " + id + " not found.");
+            throw new EntityNotFoundException("User with ID " + id + " not found.")
         }
-        userRepository.deleteById(id);
+        userRepository.deleteById(id)
     }
 }

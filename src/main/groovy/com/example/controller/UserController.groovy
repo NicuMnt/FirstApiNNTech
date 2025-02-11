@@ -53,22 +53,19 @@ class UserController {
         }
     }
 
-    @DeleteMapping("/users/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable("id") Long id) {
-        userService.deleteUser(id);
-        return ResponseEntity.ok("User deleted successfully");
+    // ✅ DELETE request to delete user by ID
+    @DeleteMapping("/{id}")
+    ResponseEntity<String> deleteUser(@PathVariable("id") Long id) { // 👈 Add explicit name
+        userService.deleteUser(id)
+        return ResponseEntity.ok("User deleted successfully!")
     }
 
 
     // ✅ Register a new user
     @PostMapping("/register")
-    ResponseEntity<?> registerUser(@RequestBody User user) {
-        try {
-            User newUser = userService.registerUser(user)
-            return ResponseEntity.status(HttpStatus.CREATED).body(newUser)
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage())
-        }
+    ResponseEntity<String> registerUser(@RequestBody User user) {
+        String message = userService.registerUser(user)
+        return ResponseEntity.ok(message)  // ✅ Returns success message properly
     }
 
     @PostMapping("/users")
